@@ -1,5 +1,17 @@
+.reviewContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+
+  @media (min-width: 960px){
+    gap: 32px;
+  }
+}
+
 .reviewCard {
   @include card;
+  width: 400px;
 }
 
 .cardContainer {

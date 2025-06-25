@@ -7,6 +7,12 @@ body {
   background-color: var(--backgroud-color);
 }
 
+.wrapper {
+  padding: 16px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
 button {
   cursor: pointer;
   border: none;

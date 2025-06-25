@@ -24,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <div className="wrapper">
+          {children}
+        </div>
       </body>
     </html>
   );

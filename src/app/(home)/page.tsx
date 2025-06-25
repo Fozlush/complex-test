@@ -40,7 +40,7 @@ export default async function Home() {
 
   return (
     <>
-      <div>
+      <div className={styles.reviewContainer}>
         {reviews.map(({id, text}) => {
           return <div key={id} className={styles.reviewCard} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }} />
         })}
