@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Интернет-магазин (Next.js)
 
-## Getting Started
+Проект интернет-магазина с корзиной товаров, адаптивным дизайном и динамической подгрузкой контента.
 
-First, run the development server:
+## Основные функции
+
+### Адаптивность
+- Адаптирован под мобильные устройства и планшеты
+- Гибкая сетка товаров и отзывов
+
+### Динамический контент
+- **Отзывы**: загружаются из HTML, обёрнутого в JSON (так было написано в тз, что это значит хз, просто отрисовал отзывы с API)
+- **Товары**: 
+  - Первая страница загружается сразу
+  - Последующие страницы подгружаются через AJAX при скролле (бесконечный скролл)
+
+### Корзина и заказы
+- Интерактивное управление количеством товаров (+/- и ручной ввод)
+- Реальное обновление корзины при изменении количества
+- Сохранение состояния корзины и номера телефона при перезагрузке
+- Валидация телефона с маской ввода (+7 XXX XXX-XX-XX)
+- Отправка заказа на сервер с обработкой ответа
+- Стилизованный попап подтверждения заказа
+
+### Дополнительные улучшения
+- Защита от XSS в отзывах
+- Оптимизация длинных названий товаров (троеточие)
+- SSR для быстрой первоначальной загрузки
+
+## Установка и запуск
+
+- Скачайте проект
+- Установите зависимости:
+```bash
+npm i
+```
+
+- Запустите проект:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
