@@ -1,0 +1,8 @@
+.card {
+  width: 300px;
+  @include card;
+
+  .image {
+    max-width: 100%;
+  }
+}
