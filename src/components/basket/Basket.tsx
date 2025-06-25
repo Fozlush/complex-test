@@ -5,9 +5,34 @@ import { useEffect, useState } from "react";
 import styles from "./basket.module.scss";
 import { Modal } from "../popup/Modal";
 
+const formatPhoneNumber = (phoneNumber: string) => {
+    const cleaned = phoneNumber.replace(/\D/g, "");
+    
+    // Применяем маску: +7 (XXX) XXX-XX-XX
+    let formatted = "+7 ";
+    if (cleaned.length > 1) {
+      const rest = cleaned.slice(1);
+      if (rest.length > 0) {
+        formatted += `(${rest.substring(0, 3)}`;
+      }
+      if (rest.length > 3) {
+        formatted += `) ${rest.substring(3, 6)}`;
+      }
+      if (rest.length > 6) {
+        formatted += `-${rest.substring(6, 8)}`;
+      }
+      if (rest.length > 8) {
+        formatted += `-${rest.substring(8, 10)}`;
+      }
+    }
+    
+    return formatted;
+  };
+
 export const Basket = () => {
   const { cart, clearCart } = useCartStore();
   const [phone, setPhone] = useState("");
+  const [displayPhone, setDisplayPhone] = useState("");
   const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +43,7 @@ export const Basket = () => {
     const savedPhone = localStorage.getItem("basket_phone");
     if (savedPhone) {
       setPhone(savedPhone);
+      setDisplayPhone(formatPhoneNumber(savedPhone));
     }
   }, []);
 
@@ -27,9 +53,21 @@ export const Basket = () => {
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    setPhone(value);
-    localStorage.setItem("basket_phone", value);
+    const input = e.target.value;
+    const cleaned = input.replace(/[^\d+]/g, "");
+    
+    let phoneValue = cleaned;
+    if (/^[789]/.test(cleaned)) {
+      phoneValue = "+7" + cleaned.substring(1);
+    }
+    
+    phoneValue = phoneValue.substring(0, 12);
+    
+    const digitsOnly = phoneValue.replace(/\D/g, "");
+    setPhone(digitsOnly);
+    localStorage.setItem("basket_phone", digitsOnly);
+    
+    setDisplayPhone(formatPhoneNumber(digitsOnly));
     setIsPhoneValid(true);
   };
 
@@ -74,6 +112,7 @@ export const Basket = () => {
       clearCart();
       localStorage.removeItem("basket_phone");
       setPhone("");
+      setDisplayPhone("");
     } catch (err) {
       setModalMessage(err instanceof Error ? err.message : "Произошла ошибка при оформлении заказа");
       setIsModalOpen(true);
@@ -101,9 +140,9 @@ export const Basket = () => {
         <input
           type="tel"
           id="phone"
-          value={phone}
+          value={displayPhone}
           onChange={handlePhoneChange}
-          placeholder="79991234567"
+          placeholder="+7 (999) 123-45-67"
           className={`${styles.input} ${!isPhoneValid ? styles.invalid : ""}`}
         />
         <button
