@@ -3,11 +3,13 @@
 import { useCartStore } from "@/store/cartStore";
 import { useEffect, useState } from "react";
 import styles from "./basket.module.scss";
+import { Modal } from "../popup/Modal";
 
 export const Basket = () => {
-  const { cart, totalPrice, clearCart } = useCartStore();
+  const { cart, clearCart } = useCartStore();
   const [phone, setPhone] = useState("");
   const [isPhoneValid, setIsPhoneValid] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const savedPhone = localStorage.getItem("basket_phone");
@@ -22,7 +24,7 @@ export const Basket = () => {
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(/[^0-9]/g, '');
     setPhone(value);
     localStorage.setItem("basket_phone", value);
     setIsPhoneValid(true);
@@ -35,7 +37,7 @@ export const Basket = () => {
     setIsPhoneValid(isValid);
 
     if (isValid) {
-      alert(`Заказ оформлен! Номер: ${phone}\nСумма: ${totalPrice()}₽`);
+      setIsModalOpen(true);
       clearCart();
       localStorage.removeItem("basket_phone");
       setPhone("");
@@ -49,7 +51,7 @@ export const Basket = () => {
         {cart.length ? <>
           {cart.map(({id, price, quantity, title}) => {
             return <div key={id} className={styles.productInfo}>
-              <span>{title}</span>
+              <span className={styles.title}>{title}</span>
               <span className={styles.quantity}>x{quantity}</span>
               <span className={styles.price}>{price * quantity}₽</span>
             </div>
@@ -72,6 +74,10 @@ export const Basket = () => {
           Заказать
         </button>
       </div>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <p className={styles.modalText}>Заказик оформлен</p>
+        <button className={styles.closeModal} onClick={() => setIsModalOpen(false)}>Прикольно, понятно</button>
+      </Modal>
     </div>
   );
 };

@@ -12,6 +12,10 @@
     max-width: 400px;
     display: flex;
 
+    .title {
+      margin-right: 20px;
+    }
+
     .quantity {
       max-width: 50px;
       width: 100%;
@@ -32,16 +36,8 @@
     flex-wrap: wrap;
     gap: 16px;
 
-    @media(min-width: 960px){
-        flex-wrap: nowrap;
-      }
-
     .input {
       width: 100%;
-
-      @media(min-width: 960px){
-        width: 400px;
-      }
       @include buttonInCard;
     }
 
@@ -53,5 +49,24 @@
       width: 100%;
       @include buttonInCard;
     }
+
+    @media(min-width: 960px){
+      flex-wrap: nowrap;
+
+      .input {
+        width: 400px;
+      }
+    }
   }
+}
+
+.modalText {
+  text-align: center;
+  font-size: 20px;
+}
+
+.closeModal {
+  width: 100%;
+  margin-top: 20px;
+  @include buttonInCard;
 }

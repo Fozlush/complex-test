@@ -20,7 +20,6 @@ export function ProductsLoader({ initialPage, hasMore: initialHasMore }: {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products?page=${page}&page_size=${process.env.NEXT_PUBLIC_ITEM_PER_PAGE}`)
       const data = await response.json()
-      console.log(data)
       setProducts(prev => [...prev, ...data.items])
       setPage(prev => prev + 1)
       setHasMore(Number(process.env.NEXT_PUBLIC_ITEM_PER_PAGE) * page < data.total)

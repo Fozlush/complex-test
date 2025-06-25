@@ -6,8 +6,8 @@
 
 @mixin buttonInCard {
   height: 68px;
-  background-color: var(--background-color);
   color: #FFFFFF;
   font-size: 44px;
   border-radius: 15px;
+  background-color: var(--background-color);
 }
