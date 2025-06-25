@@ -10,6 +10,9 @@ export const Basket = () => {
   const [phone, setPhone] = useState("");
   const [isPhoneValid, setIsPhoneValid] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
     const savedPhone = localStorage.getItem("basket_phone");
@@ -30,17 +33,53 @@ export const Basket = () => {
     setIsPhoneValid(true);
   };
 
-  const handleSubmit = () => {
-    if (cart.length === 0) return;
+  const handleSubmit = async () => {
+    if (cart.length === 0) {
+      setError("Корзина пуста");
+      return;
+    }
 
     const isValid = checkPhoneValidity(phone);
     setIsPhoneValid(isValid);
 
-    if (isValid) {
+    if (!isValid) {
+      setError("Введите корректный номер телефона (11 цифр)");
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: phone,
+          cart: cart.map(item => ({
+            id: item.id,
+            quantity: item.quantity
+          }))
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Ошибка при оформлении заказа");
+      }
+
+      setModalMessage("Заказ успешно оформлен");
       setIsModalOpen(true);
       clearCart();
       localStorage.removeItem("basket_phone");
       setPhone("");
+    } catch (err) {
+      setModalMessage(err instanceof Error ? err.message : "Произошла ошибка при оформлении заказа");
+      setIsModalOpen(true);
+      setError(err instanceof Error ? err.message : "Произошла ошибка");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,13 +109,17 @@ export const Basket = () => {
         <button
           onClick={handleSubmit}
           className={styles.orderButton}
+          disabled={isLoading}
         >
-          Заказать
+          {isLoading ? "Отправка..." : "Заказать"}
         </button>
       </div>
+      {error && <p className={styles.error}>{error}</p>}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <p className={styles.modalText}>Заказик оформлен</p>
-        <button className={styles.closeModal} onClick={() => setIsModalOpen(false)}>Прикольно, понятно</button>
+        <p className={styles.modalText}>{modalMessage}</p>
+        <button className={styles.closeModal} onClick={() => setIsModalOpen(false)}>
+          Прикольно, понятно
+        </button>
       </Modal>
     </div>
   );
