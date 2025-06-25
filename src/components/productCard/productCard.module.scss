@@ -33,3 +33,27 @@
     margin-bottom: 32px;
   }
 }
+
+.blockButtons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+
+  * {
+    @include buttonInCard;
+  }
+
+  .addToCart {
+    width: 100%;
+  }
+
+  .quantityButton {
+    width: 68px;
+  }
+
+  input {
+    width: calc(100% - 144px);
+    text-align: center;
+  }
+}

@@ -1,0 +1,57 @@
+.basket {
+  max-width: 700px;
+  margin: 24px auto 0 auto;
+  @include card;
+
+  .products {
+    margin-top: 20px;
+  }
+
+  .productInfo {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+
+    .quantity {
+      max-width: 50px;
+      width: 100%;
+      margin-left: auto;
+      margin-right: 20px;
+    }
+
+    .price {
+      max-width: 100px;
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+
+  .buttonsBlock {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    @media(min-width: 960px){
+        flex-wrap: nowrap;
+      }
+
+    .input {
+      width: 100%;
+
+      @media(min-width: 960px){
+        width: 400px;
+      }
+      @include buttonInCard;
+    }
+
+    .invalid {
+      background-color: #900000;
+    }
+
+    .orderButton {
+      width: 100%;
+      @include buttonInCard;
+    }
+  }
+}

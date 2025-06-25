@@ -4,6 +4,7 @@ import { ProductCard } from "@/components";
 import type { IProductsResponse } from "@/shared/types/products";
 import { ProductsLoader } from '@/components/productsLoader/ProductsLoader';
 import styles from "./page.module.scss"
+import { Basket } from '@/components/basket/Basket';
 
 interface IReview {
   id: number;
@@ -45,6 +46,7 @@ export default async function Home() {
           return <div key={id} className={styles.reviewCard} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }} />
         })}
       </div>
+      <Basket/>
       <div className={styles.cardContainer}>
         {initialProducts.items.map((product) => (
           <ProductCard key={product.id} {...product} />
